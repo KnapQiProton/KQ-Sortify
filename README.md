@@ -1,12 +1,25 @@
 <div align="center">
-  <img src="logo.png" alt="KQ Sortify Logo" width="130" />
-  <h1>KQ Sortify</h1>
+  <img src="assets/banner.jpg" alt="KQ Sortify Hero Banner" width="100%" />
+</div>
+
+<br/>
+
+<div align="center">
   <p><strong>Intelligent, Rule-Based Desktop File Organizer with Dark Mode GUI & Smooth Animations</strong></p>
 
   [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
   [![CustomTkinter](https://img.shields.io/badge/GUI-CustomTkinter-blueviolet.svg)](https://customtkinter.tomschimansky.com/)
   [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6.svg)](https://microsoft.com/windows)
   [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+</div>
+
+---
+
+## 📸 Interface Preview
+
+<div align="center">
+  <img src="assets/preview.png" alt="KQ Sortify GUI Preview" width="100%" />
+  <p><em>Modern Dark Mode Interface featuring Real-Time Bilingual Toggle (ID / EN), Safe Dry-Run, Stats Dashboard & Category Pills</em></p>
 </div>
 
 ---
@@ -78,6 +91,9 @@ python -m PyInstaller --noconfirm --onefile --windowed --icon=logo.ico --name="K
 ```
 KQ Sortify/
 │
+├── assets/                    # Project Screenshots & Banners
+│   ├── banner.jpg             # Hero Banner Image
+│   └── preview.png            # GUI Interface Screenshot
 ├── KQ_Sortify.exe             # Standalone Windows Executable
 ├── Jalankan_KQ_Sortify.bat    # Quick Launcher Batch Script
 ├── gui.py                     # CustomTkinter Dark Mode GUI & Animations
