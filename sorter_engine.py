@@ -268,7 +268,7 @@ def scan_directory(source_folder, target_mode="in_place", custom_target="", rule
                     "category": category,
                     "color": color,
                     "icon": icon,
-                    "selected": True
+                    "selected": False
                 }
 
                 items.append(item)

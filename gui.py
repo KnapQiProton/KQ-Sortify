@@ -983,7 +983,7 @@ class KQSortifyApp(ctk.CTk):
         toolbar.pack(fill="x", padx=16, pady=12)
 
         # Select All Checkbox
-        self.select_all_var = ctk.BooleanVar(value=True)
+        self.select_all_var = ctk.BooleanVar(value=False)
         self.select_all_cb = ctk.CTkCheckBox(
             toolbar, text=self.t("select_all"),
             variable=self.select_all_var,
@@ -1189,6 +1189,7 @@ class KQSortifyApp(ctk.CTk):
         self._is_scanning = False
         self.scan_btn.configure(state="normal", text=self.t("scan_btn"))
         self.current_scan_data = scan_data
+        self.select_all_var.set(False)
 
         # Update stats
         self.stat_cards["total_files"].configure(text=str(scan_data["total_files"]))
@@ -1231,7 +1232,7 @@ class KQSortifyApp(ctk.CTk):
                 if query not in item["name"].lower() and query not in item["extension"].lower():
                     continue
 
-            chk = "☑" if item.get("selected", True) else "☐"
+            chk = "☑" if item.get("selected", False) else "☐"
             cat_key = item["category"]
             cat_name = self.get_cat_name(cat_key)
             cat_icon = CATEGORY_ICONS.get(cat_key, "📁")
