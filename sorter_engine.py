@@ -318,6 +318,58 @@ def execute_organize(items_to_move, batch_id=None):
         "success": len(errors) == 0
     }
 
+def move_to_custom_folder(items_to_move, folder_name, base_dir):
+    """Move selected files into a user-named custom folder inside base_dir."""
+    batch_id = str(uuid.uuid4())
+    target_dir = os.path.join(base_dir, folder_name)
+
+    history = load_history()
+    moved_records = []
+    errors = []
+
+    for item in items_to_move:
+        src = item["original_path"]
+
+        if not os.path.exists(src):
+            errors.append(f"File not found: {src}")
+            continue
+
+        try:
+            os.makedirs(target_dir, exist_ok=True)
+            safe_dest = get_safe_destination_path(target_dir, item["name"])
+            shutil.move(src, safe_dest)
+
+            moved_records.append({
+                "original_path": src,
+                "current_path": safe_dest,
+                "name": item["name"],
+                "is_dir": item.get("is_dir", False),
+                "size_bytes": item.get("size_bytes", 0)
+            })
+        except Exception as e:
+            errors.append(f"Failed to move {item['name']}: {str(e)}")
+
+    if moved_records:
+        batch_entry = {
+            "batch_id": batch_id,
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "moved_count": len(moved_records),
+            "records": moved_records,
+            "status": "active",
+            "custom_folder": folder_name
+        }
+        history.append(batch_entry)
+        save_history(history)
+
+    return {
+        "batch_id": batch_id,
+        "moved_count": len(moved_records),
+        "folder_name": folder_name,
+        "target_dir": target_dir,
+        "errors": errors,
+        "success": len(errors) == 0
+    }
+
 def undo_last_batch(batch_id=None):
     history = load_history()
     if not history:

@@ -373,6 +373,20 @@ TRANSLATIONS = {
         "rules_modal_save_btn": "Simpan & Tutup",
         "preset_project": "Folder Proyek",
         "preset_docs": "Dokumen",
+        "custom_folder_btn": "📂 Pindahkan ke Folder Baru",
+        "custom_folder_dialog_title": "Buat Folder & Pindahkan File",
+        "custom_folder_dialog_header": "📂 Pindahkan {count} file terpilih ke folder baru",
+        "custom_folder_dialog_label": "Nama Folder Baru:",
+        "custom_folder_dialog_placeholder": "Ketik nama folder (misal: Tugas Kalkulus, Foto Liburan)",
+        "custom_folder_dialog_create": "📂 Buat & Pindahkan",
+        "custom_folder_dialog_cancel": "Batal",
+        "custom_folder_empty_name": "Nama folder tidak boleh kosong.",
+        "custom_folder_success_title": "Berhasil!",
+        "custom_folder_success_msg": "✨ Berhasil memindahkan {count} file ke folder:\n📁 {folder}\n\nAnda bisa membatalkan dengan tombol Undo kapan saja.",
+        "status_custom_moving": "Memindahkan {count} file ke folder '{folder}'...",
+        "status_custom_done": "✨ {count} file berhasil dipindahkan ke folder '{folder}'!",
+        "ctx_move_custom": "📂 Pindahkan {count} File ke Folder Baru...",
+        "ctx_toggle_select": "☑/☐ Pilih / Batal Pilih File Ini",
         "cat_names": {
             "Kuliah": "Kuliah",
             "Coding": "Coding",
@@ -451,6 +465,20 @@ TRANSLATIONS = {
         "rules_modal_save_btn": "Save & Close",
         "preset_project": "Project Folder",
         "preset_docs": "Documents",
+        "custom_folder_btn": "📂 Move to New Folder",
+        "custom_folder_dialog_title": "Create Folder & Move Files",
+        "custom_folder_dialog_header": "📂 Move {count} selected files to a new folder",
+        "custom_folder_dialog_label": "New Folder Name:",
+        "custom_folder_dialog_placeholder": "Type folder name (e.g. Vacation Photos, Project Alpha)",
+        "custom_folder_dialog_create": "📂 Create & Move",
+        "custom_folder_dialog_cancel": "Cancel",
+        "custom_folder_empty_name": "Folder name cannot be empty.",
+        "custom_folder_success_title": "Success!",
+        "custom_folder_success_msg": "✨ Successfully moved {count} files to folder:\n📁 {folder}\n\nYou can undo this anytime with the Undo button.",
+        "status_custom_moving": "Moving {count} files to folder '{folder}'...",
+        "status_custom_done": "✨ {count} files successfully moved to folder '{folder}'!",
+        "ctx_move_custom": "📂 Move {count} Files to New Folder...",
+        "ctx_toggle_select": "☑/☐ Toggle Selection for This File",
         "cat_names": {
             "Kuliah": "College / Study",
             "Coding": "Coding",
@@ -694,6 +722,7 @@ class KQSortifyApp(ctk.CTk):
         self.select_all_cb.configure(text=self.t("select_all"))
         self.search_entry.configure(placeholder_text=self.t("search_placeholder"))
         self.dry_run_badge.configure(text=self.t("dry_run_badge"))
+        self.custom_folder_btn.configure(text=self.t("custom_folder_btn"))
 
         # Treeview Headings
         self.tree.heading("#0", text=self.t("col_select"))
@@ -978,6 +1007,18 @@ class KQSortifyApp(ctk.CTk):
         )
         self.organize_btn.pack(side="right")
 
+        # Custom Folder Button: Move selected files to a user-named folder
+        self.custom_folder_btn = AnimatedCTkButton(
+            toolbar, text=self.t("custom_folder_btn"),
+            font=ctk.CTkFont(size=12, weight="bold"),
+            fg_color="#27272a", hover_color="#38383f", text_color="#f4f4f5",
+            border_width=1, border_color="#3f3f46", hover_border_color="#a78bfa",
+            corner_radius=10, height=36,
+            state="disabled",
+            command=self.open_custom_folder_dialog
+        )
+        self.custom_folder_btn.pack(side="right", padx=(0, 10))
+
         # Dry-run badge
         self.dry_run_badge = ctk.CTkLabel(
             toolbar, text=self.t("dry_run_badge"),
@@ -1072,6 +1113,8 @@ class KQSortifyApp(ctk.CTk):
         self.scrollbar.pack(side="right", fill="y")
 
         self.tree.bind("<ButtonRelease-1>", self.on_tree_click)
+        self.tree.bind("<Button-3>", self.on_tree_right_click)
+        self.tree.bind("<Button-2>", self.on_tree_right_click)
         self.tree.bind("<space>", self.on_tree_space)
 
     def create_status_bar(self):
@@ -1220,6 +1263,37 @@ class KQSortifyApp(ctk.CTk):
         for item_id in selected:
             self.toggle_item_selection(item_id)
 
+    def on_tree_right_click(self, event):
+        row_id = self.tree.identify_row(event.y)
+        if row_id and row_id not in self.tree.selection():
+            self.tree.selection_set(row_id)
+
+        items_selected = [it for it in self.current_scan_data.get("items", []) if it.get("selected", True)] if self.current_scan_data else []
+        count = len(items_selected)
+
+        import tkinter as tk
+        menu = tk.Menu(self, tearoff=0, bg="#1c1c1e", fg="#f4f4f5", activebackground="#3b82f6", activeforeground="#ffffff", bd=1, relief="solid")
+
+        menu.add_command(
+            label=self.t("ctx_move_custom", count=count),
+            command=self.open_custom_folder_dialog,
+            state="normal" if count > 0 else "disabled"
+        )
+        menu.add_separator()
+        if row_id:
+            menu.add_command(
+                label=self.t("ctx_toggle_select"),
+                command=lambda: self.toggle_item_selection(row_id)
+            )
+        menu.add_command(
+            label=self.t("select_all"),
+            command=lambda: (self.select_all_var.set(True), self.toggle_select_all())
+        )
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
+
     def toggle_select_all(self):
         val = self.select_all_var.get()
         if self.current_scan_data:
@@ -1241,6 +1315,9 @@ class KQSortifyApp(ctk.CTk):
             text=self.t("organize_btn", count=count),
             state="normal" if count > 0 else "disabled"
         )
+        self.custom_folder_btn.configure(
+            state="normal" if count > 0 else "disabled"
+        )
 
     def _update_organize_spinner(self):
         if getattr(self, "_is_organizing", False):
@@ -1248,6 +1325,152 @@ class KQSortifyApp(ctk.CTk):
             self._spinner_idx += 1
             self.organize_btn.configure(text=f"⚡ {frame} {self.t('organizing')}")
             self.after(80, self._update_organize_spinner)
+
+    def open_custom_folder_dialog(self):
+        """Open a modal dialog asking for a folder name, then move selected files there."""
+        if not self.current_scan_data:
+            return
+
+        items_to_move = [it for it in self.current_scan_data.get("items", []) if it.get("selected", True)]
+        if not items_to_move:
+            messagebox.showinfo(self.t("dialog_no_files_title"), self.t("dialog_no_files_msg"))
+            return
+
+        count = len(items_to_move)
+
+        dialog = ctk.CTkToplevel(self)
+        dialog.title(self.t("custom_folder_dialog_title"))
+        dialog.geometry("520x260")
+        dialog.transient(self)
+        dialog.grab_set()
+        dialog.configure(fg_color="#121214")
+
+        # Center on parent
+        dialog.update_idletasks()
+        x = self.winfo_x() + (self.winfo_width() // 2) - 260
+        y = self.winfo_y() + (self.winfo_height() // 2) - 130
+        dialog.geometry(f"+{x}+{y}")
+
+        # Try to set icon
+        ico_path = get_resource_path("logo.ico")
+        if os.path.exists(ico_path):
+            try:
+                dialog.iconbitmap(ico_path)
+            except Exception:
+                pass
+
+        # Header
+        header_lbl = ctk.CTkLabel(
+            dialog, text=self.t("custom_folder_dialog_header", count=count),
+            font=ctk.CTkFont(size=16, weight="bold"), text_color="#f4f4f5"
+        )
+        header_lbl.pack(pady=(24, 6))
+
+        # Description showing selected file names preview
+        file_names_preview = ", ".join([it["name"] for it in items_to_move[:3]])
+        if count > 3:
+            file_names_preview += f" ... (+{count - 3})"
+        desc_lbl = ctk.CTkLabel(
+            dialog, text=file_names_preview,
+            font=ctk.CTkFont(size=10), text_color="#a1a1aa",
+            wraplength=460
+        )
+        desc_lbl.pack(pady=(0, 14))
+
+        # Folder name input
+        input_frame = ctk.CTkFrame(dialog, fg_color="transparent")
+        input_frame.pack(fill="x", padx=30, pady=(0, 6))
+
+        ctk.CTkLabel(
+            input_frame, text=self.t("custom_folder_dialog_label"),
+            font=ctk.CTkFont(size=12, weight="bold"), text_color="#d4d4d8"
+        ).pack(anchor="w", pady=(0, 4))
+
+        folder_entry = ctk.CTkEntry(
+            input_frame,
+            placeholder_text=self.t("custom_folder_dialog_placeholder"),
+            font=ctk.CTkFont(size=13),
+            fg_color="#09090b", border_color="#3f3f46", text_color="#f4f4f5",
+            corner_radius=10, height=42
+        )
+        folder_entry.pack(fill="x")
+        folder_entry.focus_set()
+        attach_entry_glow(folder_entry, normal_border="#3f3f46", focus_border="#a78bfa")
+
+        # Action buttons row
+        btn_frame = ctk.CTkFrame(dialog, fg_color="transparent")
+        btn_frame.pack(fill="x", padx=30, pady=(14, 20))
+
+        def on_create():
+            name = folder_entry.get().strip()
+            if not name:
+                messagebox.showwarning(
+                    self.t("custom_folder_dialog_title"),
+                    self.t("custom_folder_empty_name")
+                )
+                folder_entry.focus_set()
+                return
+            # Sanitize illegal chars for folder name
+            illegal = '<>:"/\\|?*'
+            for ch in illegal:
+                name = name.replace(ch, '_')
+            dialog.destroy()
+            self.trigger_custom_move(items_to_move, name)
+
+        folder_entry.bind("<Return>", lambda e: on_create())
+
+        create_btn = AnimatedCTkButton(
+            btn_frame, text=self.t("custom_folder_dialog_create"),
+            font=ctk.CTkFont(size=13, weight="bold"),
+            fg_color="#7c3aed", hover_color="#8b5cf6", text_color="#ffffff",
+            border_width=1, border_color="#6d28d9", hover_border_color="#c4b5fd",
+            corner_radius=10, height=40,
+            command=on_create
+        )
+        create_btn.pack(side="right")
+
+        cancel_btn = AnimatedCTkButton(
+            btn_frame, text=self.t("custom_folder_dialog_cancel"),
+            font=ctk.CTkFont(size=12, weight="bold"),
+            fg_color="#27272a", hover_color="#38383f", text_color="#a1a1aa",
+            border_width=1, border_color="#3f3f46", hover_border_color="#71717a",
+            corner_radius=10, height=40,
+            command=dialog.destroy
+        )
+        cancel_btn.pack(side="right", padx=(0, 10))
+
+    def trigger_custom_move(self, items_to_move, folder_name):
+        """Move selected files to a custom-named folder in the source directory."""
+        source_folder = self.path_entry.get().strip()
+
+        self.custom_folder_btn.configure(state="disabled")
+        self.organize_btn.configure(state="disabled")
+        self.status_lbl.configure(text=self.t("status_custom_moving", count=len(items_to_move), folder=folder_name))
+
+        def run():
+            try:
+                res = sorter_engine.move_to_custom_folder(items_to_move, folder_name, source_folder)
+                self.after(0, lambda: self.on_custom_move_complete(res))
+            except Exception as e:
+                self.after(0, lambda: self.on_custom_move_error(str(e)))
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def on_custom_move_complete(self, res):
+        self.refresh_undo_button()
+        moved = res.get("moved_count", 0)
+        folder = res.get("folder_name", "")
+        self.status_lbl.configure(text=self.t("status_custom_done", count=moved, folder=folder))
+        messagebox.showinfo(
+            self.t("custom_folder_success_title"),
+            self.t("custom_folder_success_msg", count=moved, folder=folder)
+        )
+        self.trigger_scan()
+
+    def on_custom_move_error(self, err_msg):
+        self.status_lbl.configure(text=f"Error: {err_msg}")
+        messagebox.showerror("Error", f"Error:\n{err_msg}")
+        self.trigger_scan()
 
     def trigger_organize(self):
         if not self.current_scan_data:
