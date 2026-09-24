@@ -1,0 +1,21 @@
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller Build Artifacts
+build/
+dist/
+*.spec
+
+# User local undo history log (keeps repo clean for new users)
+history.json
+
+# IDE & OS temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*.log

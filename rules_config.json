@@ -1,0 +1,314 @@
+{
+  "categories": {
+    "Kuliah": {
+      "folder_name": "Kuliah",
+      "icon": "graduation-cap",
+      "color": "#a78bfa",
+      "keywords": [
+        "tugas",
+        "kuliah",
+        "materi",
+        "alpro",
+        "praktikum",
+        "skripsi",
+        "jurnal",
+        "modul",
+        "slide",
+        "uts",
+        "uas",
+        "dosen",
+        "mahasiswa",
+        "laporan",
+        "makalah",
+        "pertemuan",
+        "bab",
+        "silabus",
+        "ujian",
+        "akademik",
+        "studi",
+        "presentasi",
+        "quiz",
+        "kuis",
+        "referensi",
+        "homework",
+        "assignment",
+        "lecture",
+        "thesis",
+        "syllabus",
+        "paper",
+        "exam",
+        "study",
+        "module",
+        "notes",
+        "course"
+      ],
+      "extensions": [
+        ".pdf",
+        ".docx",
+        ".doc",
+        ".pptx",
+        ".ppt",
+        ".xlsx",
+        ".xls"
+      ]
+    },
+    "Coding": {
+      "folder_name": "Coding",
+      "icon": "code",
+      "color": "#38bdf8",
+      "keywords": [
+        "repo",
+        "project",
+        "program",
+        "source",
+        "script",
+        "algorithm"
+      ],
+      "extensions": [
+        ".py",
+        ".cpp",
+        ".c",
+        ".h",
+        ".hpp",
+        ".js",
+        ".ts",
+        ".html",
+        ".css",
+        ".java",
+        ".cs",
+        ".php",
+        ".sql",
+        ".json",
+        ".xml",
+        ".sh",
+        ".bat",
+        ".ps1",
+        ".ipynb",
+        ".rs",
+        ".go",
+        ".rb",
+        ".vue",
+        ".jsx",
+        ".tsx",
+        ".yaml",
+        ".yml",
+        ".md",
+        ".lua",
+        ".swift",
+        ".dart"
+      ]
+    },
+    "Games": {
+      "folder_name": "Games",
+      "icon": "gamepad",
+      "color": "#f43f5e",
+      "keywords": [
+        "game",
+        "repack",
+        "steam",
+        "patch",
+        "mod",
+        "trainer",
+        "emulator",
+        "fitgirl",
+        "dodi",
+        "crack",
+        "roms",
+        "savegame"
+      ],
+      "extensions": [
+        ".iso",
+        ".rom",
+        ".nsp",
+        ".xci",
+        ".cia",
+        ".vpk",
+        ".sav",
+        ".pak",
+        ".gcm",
+        ".nds",
+        ".gba",
+        ".nes",
+        ".sfc",
+        ".smc",
+        ".bin",
+        ".cue"
+      ]
+    },
+    "Documents": {
+      "folder_name": "Documents",
+      "icon": "file-text",
+      "color": "#60a5fa",
+      "keywords": [],
+      "extensions": [
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".xls",
+        ".xlsx",
+        ".ppt",
+        ".pptx",
+        ".txt",
+        ".rtf",
+        ".odt",
+        ".csv",
+        ".epub",
+        ".mobi",
+        ".pages"
+      ]
+    },
+    "Archives": {
+      "folder_name": "Archives",
+      "icon": "archive",
+      "color": "#fbbf24",
+      "keywords": [],
+      "extensions": [
+        ".zip",
+        ".rar",
+        ".7z",
+        ".tar",
+        ".gz",
+        ".bz2",
+        ".xz",
+        ".iso",
+        ".tgz"
+      ]
+    },
+    "Images": {
+      "folder_name": "Images",
+      "icon": "image",
+      "color": "#34d399",
+      "keywords": [
+        "screenshot",
+        "tangkapan layar",
+        "wallpaper",
+        "foto",
+        "photo",
+        "img"
+      ],
+      "extensions": [
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".webp",
+        ".svg",
+        ".bmp",
+        ".ico",
+        ".psd",
+        ".ai",
+        ".raw",
+        ".heic",
+        ".tiff"
+      ]
+    },
+    "Videos": {
+      "folder_name": "Videos",
+      "icon": "film",
+      "color": "#fb7185",
+      "keywords": [
+        "recording",
+        "rekaman",
+        "video",
+        "movie",
+        "film"
+      ],
+      "extensions": [
+        ".mp4",
+        ".mkv",
+        ".avi",
+        ".mov",
+        ".flv",
+        ".wmv",
+        ".webm",
+        ".m4v"
+      ]
+    },
+    "Audio": {
+      "folder_name": "Audio",
+      "icon": "music",
+      "color": "#c084fc",
+      "keywords": [
+        "audio",
+        "song",
+        "lagu",
+        "voice",
+        "podcast"
+      ],
+      "extensions": [
+        ".mp3",
+        ".wav",
+        ".flac",
+        ".aac",
+        ".ogg",
+        ".m4a",
+        ".wma",
+        ".opus"
+      ]
+    },
+    "Installers": {
+      "folder_name": "Installers",
+      "icon": "download",
+      "color": "#fb923c",
+      "keywords": [
+        "installer",
+        "setup",
+        "update",
+        "patch"
+      ],
+      "extensions": [
+        ".exe",
+        ".msi",
+        ".apk",
+        ".dmg",
+        ".pkg",
+        ".deb"
+      ]
+    },
+    "Design_3D": {
+      "folder_name": "3D_Design",
+      "icon": "box",
+      "color": "#2dd4bf",
+      "keywords": [
+        "render",
+        "3d",
+        "model"
+      ],
+      "extensions": [
+        ".blend",
+        ".obj",
+        ".fbx",
+        ".stl",
+        ".step",
+        ".dae",
+        ".3ds"
+      ]
+    },
+    "Fonts": {
+      "folder_name": "Fonts",
+      "icon": "type",
+      "color": "#94a3b8",
+      "keywords": [
+        "font"
+      ],
+      "extensions": [
+        ".ttf",
+        ".otf",
+        ".woff",
+        ".woff2",
+        ".eot"
+      ]
+    },
+    "Torrents": {
+      "folder_name": "Torrents",
+      "icon": "magnet",
+      "color": "#10b981",
+      "keywords": [],
+      "extensions": [
+        ".torrent"
+      ]
+    }
+  },
+  "custom_rules": [],
+  "language": "EN"
+}

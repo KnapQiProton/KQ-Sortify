@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SortSensei - Intelligent File Organizer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Ambient Zen Glow -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="logo-mark">整</div>
+        <div class="brand-text">
+          <h1>SortSensei</h1>
+          <span class="version-tag">Local Engine</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Daemon Status Pill -->
+        <button id="daemonToggleBtn" class="pill-badge daemon-pill" title="Klik untuk mengaktifkan/menonaktifkan auto-sort background">
+          <span class="status-dot" id="daemonDot"></span>
+          <span id="daemonText">Daemon Standby</span>
+        </button>
+
+        <!-- Rules Config Button -->
+        <button id="openRulesBtn" class="btn-secondary btn-sm">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          Aturan Kategori
+        </button>
+
+        <!-- One-Click Undo Button -->
+        <button id="undoBtn" class="btn-secondary btn-sm" disabled title="Tidak ada pemindahan yang bisa dibatalkan">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h10a8 8 0 018 8v2M3 10l5 5m-5-5l5-5"/></svg>
+          <span id="undoLabel">Undo Terakhir</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-body">
+      <!-- Target Folder Bar -->
+      <section class="folder-control-card glass-panel">
+        <div class="folder-header">
+          <div class="label-group">
+            <span class="subhead">LOKASI FOLDER SUMBER</span>
+            <h3>Folder yang Ingin Dirapikan</h3>
+          </div>
+          <div class="preset-buttons">
+            <button class="preset-chip active" data-preset="downloads">Downloads</button>
+            <button class="preset-chip" data-preset="desktop">Desktop</button>
+            <button class="preset-chip" data-preset="current">Folder Proyek Ini</button>
+          </div>
+        </div>
+
+        <div class="folder-input-row">
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+            <input type="text" id="folderPathInput" placeholder="Pilih atau masukkan path folder..." spellcheck="false">
+          </div>
+          <button id="browseFolderBtn" class="btn-outline">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+            Cari Folder...
+          </button>
+          <button id="scanBtn" class="btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            Pindai & Pratinjau
+          </button>
+        </div>
+
+        <!-- Target Mode Options -->
+        <div class="mode-options-row">
+          <span class="option-label">Metode Penyusunan:</span>
+          <label class="radio-label">
+            <input type="radio" name="targetMode" value="in_place" checked>
+            <span>Langsung di folder ini (Buat subfolder Kuliah, Coding, Game, dll.)</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="targetMode" value="subfolder">
+            <span>Pindahkan ke subfolder <code>/Organized/...</code></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Stats Grid -->
+      <section class="stats-row">
+        <div class="stat-card glass-panel">
+          <span class="stat-num" id="statTotalFiles">0</span>
+          <span class="stat-label">File Ditemukan</span>
+        </div>
+        <div class="stat-card glass-panel">
+          <span class="stat-num" id="statTotalSize">0 B</span>
+          <span class="stat-label">Total Ukuran</span>
+        </div>
+        <div class="stat-card glass-panel">
+          <span class="stat-num" id="statCategories">0</span>
+          <span class="stat-label">Kategori Terdeteksi</span>
+        </div>
+        <div class="stat-card glass-panel">
+          <span class="stat-num" id="statSelectedCount">0</span>
+          <span class="stat-label">File Siap Dirapikan</span>
+        </div>
+      </section>
+
+      <!-- Category Filter Pills Bar -->
+      <section class="category-strip" id="categoryStrip">
+        <!-- Rendered dynamically via JS -->
+      </section>
+
+      <!-- Action & Table Section -->
+      <section class="preview-section glass-panel">
+        <div class="preview-toolbar">
+          <div class="toolbar-left">
+            <label class="checkbox-container select-all-wrapper">
+              <input type="checkbox" id="selectAllCheckbox" checked>
+              <span class="checkmark"></span>
+              <span class="checkbox-text">Pilih Semua</span>
+            </label>
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="text" id="searchInput" placeholder="Cari nama file atau ekstensi...">
+            </div>
+          </div>
+
+          <div class="toolbar-right">
+            <div class="dry-run-pill">
+              <span class="shield-icon">🛡️</span>
+              <span>Dry-Run Active (Aman & Pratinjau)</span>
+            </div>
+            <button id="organizeBtn" class="btn-accent" disabled>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+              Rapikan Sekarang (<span id="btnOrganizeCount">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <!-- File Table -->
+        <div class="table-container">
+          <table class="file-table" id="fileTable">
+            <thead>
+              <tr>
+                <th style="width: 48px;"></th>
+                <th>Nama File</th>
+                <th>Kategori</th>
+                <th>Tujuan Pemindahan</th>
+                <th>Ukuran</th>
+                <th>Terakhir Diubah</th>
+              </tr>
+            </thead>
+            <tbody id="fileTableBody">
+              <tr>
+                <td colspan="6" class="empty-state">
+                  <div class="empty-illustration">📂</div>
+                  <p class="empty-title">Belum ada pemindaian</p>
+                  <p class="empty-desc">Klik tombol "Pindai & Pratinjau" di atas untuk melihat bagaimana file Anda akan dirapikan secara otomatis.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal Rules Editor -->
+    <div class="modal-backdrop" id="rulesModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Aturan & Kategori File</h3>
+          <button class="close-btn" id="closeRulesBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">SortSensei secara otomatis mengelompokkan file kuliah, coding, game, dokumen, dan arsip berdasarkan aturan berikut:</p>
+          
+          <div class="rules-tabs">
+            <div class="rules-list" id="rulesListContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="add-rule-card">
+            <h4>Tambah Kata Kunci Baru</h4>
+            <div class="add-rule-row">
+              <select id="newRuleCategory">
+                <option value="Kuliah">Kuliah (Misal: tugas, alpro)</option>
+                <option value="Coding">Coding (Misal: script, project)</option>
+                <option value="Games">Games (Misal: repack, steam)</option>
+                <option value="Documents">Documents</option>
+              </select>
+              <input type="text" id="newRuleKeyword" placeholder="Kata kunci baru (cth: kalkulus, alpro, unity)">
+              <button id="addRuleBtn" class="btn-primary btn-sm">Tambah</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="saveRulesBtn" class="btn-primary">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
