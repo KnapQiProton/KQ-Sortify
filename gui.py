@@ -1202,6 +1202,7 @@ class KQSortifyApp(ctk.CTk):
     def render_file_rows(self):
         self.tree.delete(*self.tree.get_children())
         self._last_hovered_row = None
+        self._last_clicked_id = None
 
         if not self.current_scan_data or not self.current_scan_data.get("items"):
             self.update_selected_count()
@@ -1253,10 +1254,47 @@ class KQSortifyApp(ctk.CTk):
                 break
         self.update_selected_count()
 
+    def select_range(self, start_id, end_id, target_state=True):
+        children = list(self.tree.get_children())
+        if start_id not in children or end_id not in children:
+            return
+
+        i1 = children.index(start_id)
+        i2 = children.index(end_id)
+        range_ids = set(children[min(i1, i2):max(i1, i2) + 1])
+
+        item_map = {it["id"]: it for it in self.current_scan_data.get("items", [])}
+
+        for item_id in range_ids:
+            if item_id in item_map:
+                item_map[item_id]["selected"] = target_state
+                chk = "☑" if target_state else "☐"
+                try:
+                    self.tree.item(item_id, text=chk)
+                except Exception:
+                    pass
+
+        try:
+            self.tree.selection_set(tuple(range_ids))
+        except Exception:
+            pass
+
+        self.update_selected_count()
+
     def on_tree_click(self, event):
         item_id = self.tree.identify_row(event.y)
-        if item_id:
+        if not item_id:
+            return
+
+        is_shift = bool(event.state & 0x0001) or bool(event.state & 1)
+        last_id = getattr(self, "_last_clicked_id", None)
+        children = list(self.tree.get_children())
+
+        if is_shift and last_id and last_id in children and last_id != item_id:
+            self.select_range(last_id, item_id, target_state=True)
+        else:
             self.toggle_item_selection(item_id)
+            self._last_clicked_id = item_id
 
     def on_tree_space(self, event):
         selected = self.tree.selection()
