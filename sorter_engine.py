@@ -168,6 +168,34 @@ def get_safe_destination_path(target_dir, file_name):
         counter += 1
     return candidate
 
+def get_known_organized_folders(rules):
+    folder_names = set()
+
+    for cat_name, info in rules.get("categories", {}).items():
+        folder_names.add(info.get("folder_name", cat_name).lower())
+        folder_names.add(cat_name.lower())
+
+    folder_names.update([
+        "organized", "others", "folders", "kuliah", "coding", "games",
+        "documents", "archives", "images", "videos", "audio", "installers",
+        "design_3d", "fonts", "torrents"
+    ])
+
+    history = load_history()
+    for batch in history:
+        if batch.get("status") == "active":
+            if "custom_folder" in batch and batch["custom_folder"]:
+                folder_names.add(batch["custom_folder"].lower())
+
+            for record in batch.get("records", []):
+                curr_path = record.get("current_path", "")
+                if curr_path:
+                    parent_dir = os.path.basename(os.path.dirname(curr_path))
+                    if parent_dir:
+                        folder_names.add(parent_dir.lower())
+
+    return folder_names
+
 def scan_directory(source_folder, target_mode="in_place", custom_target="", rules=None):
     if rules is None:
         rules = load_rules()
@@ -176,13 +204,8 @@ def scan_directory(source_folder, target_mode="in_place", custom_target="", rule
     if not source_path.exists() or not source_path.is_dir():
         raise ValueError(f"Directory does not exist: {source_folder}")
 
-    # Gather category folder names to avoid moving already organized category folders
-    category_folder_names = set()
-    for cat_name, info in rules.get("categories", {}).items():
-        category_folder_names.add(info.get("folder_name", cat_name).lower())
-    category_folder_names.add("organized")
-    category_folder_names.add("others")
-    category_folder_names.add("folders")
+    # Gather category and custom folder names to avoid re-organizing already created folders
+    category_folder_names = get_known_organized_folders(rules)
 
     items = []
     category_counts = {}

@@ -322,6 +322,7 @@ TRANSLATIONS = {
         "path_placeholder": "Ketik atau tempel path folder di sini (misal: C:\\Users\\...\\Downloads)",
         "browse_btn": "📂 Cari Folder...",
         "scan_btn": "🔍 Pindai File",
+        "refresh_btn": "🔄 Refresh",
         "scanning": "Memindai...",
         "mode_in_place": "Rapikan langsung di folder ini (Buat subfolder Kuliah, Coding, Games, dll.)",
         "mode_subfolder": "Pindahkan ke subfolder '/Organized/'",
@@ -414,6 +415,7 @@ TRANSLATIONS = {
         "path_placeholder": "Type or paste folder path here (e.g. C:\\Users\\...\\Downloads)",
         "browse_btn": "📂 Browse Folder...",
         "scan_btn": "🔍 Scan Files",
+        "refresh_btn": "🔄 Refresh",
         "scanning": "Scanning...",
         "mode_in_place": "Organize in-place (Create subfolders for College, Coding, Games, etc.)",
         "mode_subfolder": "Move to subfolder '/Organized/'",
@@ -707,6 +709,7 @@ class KQSortifyApp(ctk.CTk):
         self.lbl_path_title.configure(text=self.t("path_title"))
         self.browse_btn.configure(text=self.t("browse_btn"))
         self.scan_btn.configure(text=self.t("scan_btn"))
+        self.refresh_btn.configure(text=self.t("refresh_btn"))
         self.mode1.configure(text=self.t("mode_in_place"))
         self.mode2.configure(text=self.t("mode_subfolder"))
         self.btn_preset_docs.configure(text=self.t("preset_docs"))
@@ -832,7 +835,17 @@ class KQSortifyApp(ctk.CTk):
             corner_radius=10, height=42, width=130,
             command=self.trigger_scan
         )
-        self.scan_btn.pack(side="left")
+        self.scan_btn.pack(side="left", padx=(0, 10))
+
+        self.refresh_btn = AnimatedCTkButton(
+            input_row, text=self.t("refresh_btn"),
+            font=ctk.CTkFont(size=12, weight="bold"),
+            fg_color="#27272a", hover_color="#38383f", text_color="#f4f4f5",
+            border_width=1, border_color="#3f3f46", hover_border_color="#38bdf8",
+            corner_radius=10, height=42, width=110,
+            command=self.trigger_scan
+        )
+        self.refresh_btn.pack(side="left")
 
         # Organization Options Row
         options_row = ctk.CTkFrame(inner, fg_color="transparent")
