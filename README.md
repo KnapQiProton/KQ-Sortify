@@ -7,6 +7,16 @@
 <div align="center">
   <p><strong>Intelligent, Rule-Based Desktop File Organizer with Dark Mode GUI & Smooth Animations</strong></p>
 
+  <a href="https://github.com/KnapQiProton/KQ-Sortify/releases/latest/download/KQ_Sortify.exe">
+    <img src="https://img.shields.io/badge/⚡%20Download-KQ__Sortify.exe%20(v1.0.0)-2563eb?style=for-the-badge&logo=windows&logoColor=white" alt="Download KQ Sortify" height="38"/>
+  </a>
+  <a href="https://github.com/KnapQiProton/KQ-Sortify/releases/latest/download/KQ_Sortify-v1.0.0-Windows.zip">
+    <img src="https://img.shields.io/badge/📦%20Download-.ZIP%20Package-3f3f46?style=for-the-badge&logo=zip&logoColor=white" alt="Download ZIP" height="38"/>
+  </a>
+
+  <br/><br/>
+
+  [![GitHub Release](https://img.shields.io/github/v/release/KnapQiProton/KQ-Sortify?color=10b981&label=Latest%20Release)](https://github.com/KnapQiProton/KQ-Sortify/releases/latest)
   [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
   [![CustomTkinter](https://img.shields.io/badge/GUI-CustomTkinter-blueviolet.svg)](https://customtkinter.tomschimansky.com/)
   [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6.svg)](https://microsoft.com/windows)
@@ -54,12 +64,16 @@ No more manual sorting. Create your rules once, run KQ Sortify, and let it handl
 
 ## 🚀 Quick Start (Cara Menjalankan)
 
-### Option 1: Standalone Executable (No Python Required)
-1. Download or clone this repository.
-2. Double-click **`KQ_Sortify.exe`** (or `Jalankan_KQ_Sortify.bat`).
-3. That's it! The application launches instantly.
+### 📥 Option 1: Standalone Executable (Cara Termudah - Langsung Pakai)
+Bagi pengguna yang ingin langsung memakai tanpa perlu install Python atau mengetik perintah apapun:
+1. **Download langsung**:
+   - ⚡ **[Download KQ_Sortify.exe (Direct Download)](https://github.com/KnapQiProton/KQ-Sortify/releases/latest/download/KQ_Sortify.exe)**
+   - 📦 **[Download Paket .ZIP Lengkap](https://github.com/KnapQiProton/KQ-Sortify/releases/latest/download/KQ_Sortify-v1.0.0-Windows.zip)**
+2. **Jalankan**: Klik 2x file `KQ_Sortify.exe`.
+3. Selesai! Aplikasi langsung terbuka dan siap merapikan folder Anda.
 
-### Option 2: Run from Python Source
+### 💻 Option 2: Run from Python Source
+Bagi developer yang ingin menjalankan atau memodifikasi source code Python:
 1. Clone the repository:
    ```bash
    git clone https://github.com/KnapQiProton/KQ-Sortify.git
